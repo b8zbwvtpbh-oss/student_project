@@ -349,7 +349,3 @@ void load_records()
       file.close();
       cout<<"\nRecords loaded successfully.\n";
 }
-
-
-
-
