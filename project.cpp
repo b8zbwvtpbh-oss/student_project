@@ -142,7 +142,7 @@ void gpa( float* gpa, char* grade, float marks[], int num_subjects) {
     }
     
     float percentage = totalMarks / (num_subjects * 100.0);
-    *gpa = percentage * NUM_SUBJECTS;
+    *gpa = percentage * 5;
     
     if (*gpa >= 4.5)
      *grade = 'A';
@@ -349,6 +349,7 @@ void load_records()
       file.close();
       cout<<"\nRecords loaded successfully.\n";
 }
+
 
 
 
