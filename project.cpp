@@ -1,13 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
-using namespace std;
-
+#include <iomanip>
 #ifdef _WIN32
 #define PAUSE system("pause")
 #else
 #define PAUSE system("read -p 'Press any key to continue...' var")
 #endif
+using namespace std;
 
 void create_user();
 bool login();
@@ -133,75 +133,103 @@ void main_menu() {
     } while (choice != 5);
 }
 
-void gpa(float *gpa, char *grade, float marks[], int num_subjects) {
-    float total = 0;
-    for (int i = 0; i < num_subjects; i++)
-        total += marks[i];
-
-    float percentage = total / (num_subjects * 100.0);
+void gpa( float* gpa, char* grade, float marks[], int num_subjects) {
+    
+    float totalMarks = 0;
+    
+    for (int i = 0; i < num_subjects; i++){
+        totalMarks + = marks[i];
+    }
+    
+    float percentage = totalMarks / (num_subjects * 100.0);
     *gpa = percentage * 5;
-
-    if (*gpa >= 4.5) *grade = 'A';
-    else if (*gpa >= 4.0) *grade = 'B';
-    else if (*gpa >= 3.5) *grade = 'C';
-    else if (*gpa >= 3.0) *grade = 'D';
-    else if (*gpa >= 2.5) *grade = 'E';
-    else *grade = 'F';
+    
+    if (*gpa >= 4.5)
+     *grade = 'A';
+    else if (*gpa >= 4.0)
+     *grade = 'B';
+    else if (*gpa >= 3.5)
+     *grade = 'C';
+    else if (*gpa >= 3.0)
+     *grade = 'D';
+    else if (*gpa >= 2.5)
+     *grade = 'E';
+    else 
+     *grade = 'F';
 }
 
 void create_record() {
     if (student_count >= MAX_STUDENTS) {
-        cout << "Maximum number of students reached.\n";
+        cout << "students numbers maximum reached." << endl;
+        PAUSE;
         return;
     }
 
-    Student s;
-    bool unique = false;
+    int id;
+    bool recordID;
+
     do {
-        cout << "Enter Student ID: ";
-        cin >> s.id;
-        unique = true;
+        recordID = false;
+
+        cout << "Enter student ID: ";
+        cin >> id;
+
         for (int i = 0; i < student_count; i++) {
-            if (students[i].id == s.id) {
-                cout << "ID already exists. Enter a unique ID.\n";
-                unique = false;
+            if (students[i].id == id) {
+                recordID = true;
+                cout << "ID is already exist, enter a unique ID" << endl;
                 break;
             }
         }
-    } while (!unique);
+    } while (recordID);
 
-    cout << "Enter Student Name: ";
-    cin.
-ignore();
-    cin.getline(s.name, 50);
+    students[student_count].id = id;
 
+    cout << "Enter student name: ";
+    cin.ignore();
+    cin.getline(students[student_count].name, 50);
+
+    cout << "Enter marks for 5 subjects (0 - 100):" << endl;
     for (int i = 0; i < 5; i++) {
         do {
-            cout << "Enter marks for subject " << (i + 1) << ": ";
-            cin >> s.marks[i];
-            if (s.marks[i] < 0 || s.marks[i] > 100)
-                cout << "Invalid marks! Must be between 0 and 100.\n";
-        } while (s.marks[i] < 0 || s.marks[i] > 100);
+            cout << "Subject " << i + 1 << ": ";
+            cin >> students[student_count].marks[i];
+
+            if (students[student_count].marks[i] < 0 || students[student_count].marks[i] > 100) {
+                cout << "Invalid input, enter a number between 0 and 100." << endl;
+            }
+        } while (students[student_count].marks[i] < 0 || students[student_count].marks[i] > 100);
     }
 
-    gpa(&s.gpa, &s.grade, s.marks, 5);
-    students[student_count++] = s;
+    gpa(&students[student_count].gpa, &students[student_count].grade, students[student_count].marks, 5);
 
-    cout << "Record created successfully!\n";
+    cout << "Record added successfully!" << endl;
+    cout << "GPA: " << students[student_count].gpa << endl;
+    cout << "Grade: " << students[student_count].grade << endl;
+
+    student_count++;
     PAUSE;
 }
 
-void display_record() {
-    if (student_count == 0) {
-        cout << "No records to display.\n";
-    } else {
-        cout << "\n--- Student Records ---\n";
-        for (int i = 0; i < student_count; i++) {
-            cout << "ID: " << students[i].id
-                 << " | Name: " << students[i].name
-                 << " | GPA: " << students[i].gpa
-                 << " | Grade: " << students[i].grade << endl;
+void display_record()
+{
+    if (student_count == 0)
+    {
+        cout << "No student records available to display."<<endl;
+    }
+    else
+    {
+        cout << "^All Student Records^"<<endl;
+        
+        for (int i = 0; i < student_count; i++)
+        {
+            cout << "----------------------------------------"<<endl;
+            cout << "ID: " << students[i].id << endl;
+            cout << "Name: " << students[i].name << endl;
+            cout << "GPA: " << fixed << setprecision(2) << students[i].gpa << endl;
+            cout << "Grade: " << students[i].grade << endl;
         }
+        cout << "----------------------------------------"<<endl;
     }
     PAUSE;
 }
@@ -225,61 +253,100 @@ void display_specific() {
     PAUSE;
 }
 
-void delete_record() {
-    int id;
-    cout << "Enter Student ID to delete: ";
-    cin >> id;
-
-    for (int i = 0; i < student_count; i++) {
-        if (students[i].id == id) {
-            for (int j = i; j < student_count - 1; j++) {
-                students[j] = students[j + 1];
-            }
-            student_count--;
-            cout << "Record deleted successfully.\n";
-            PAUSE;
-            return;
+void delete_record() 
+{
+    if (student_count == 0)
+    {
+        cerr << " Error : No student records to delete . " << endl;
+        PAUSE;
+        return;
+    }
+    
+    int Id_To_Delete;
+    
+    cout << " Enter the student ID to delete : ";
+    cin >> Id_To_Delete;
+    
+    int index = -1;
+    
+    for (int i = 0 ; i < student_count ; i++) 
+    {
+        if (students[i].id == Id_To_Delete)
+        {
+            index = i;
+            break;
         }
     }
-    cout << "Record not found.\n";
+    
+    if (index == -1) 
+    {
+        cerr << " Error : Student ID not found . " << endl;
+        PAUSE;
+        return;
+    }
+    
+    for (int i = index ; i < student_count - 1 ; i++) 
+    {
+        students[i] = students[i + 1];
+    }
+
+    student_count--;
+    
+    cout << " Student record deleted successfully . " << endl;
     PAUSE;
 }
 
-void save_records() {
-    ofstream file("students.dat", ios::binary);
-    if (!file) {
-        cerr << "Error opening file for saving.\n";
+void save_records()
+{
+    ofstream stu_data("students.dat", ios::binary);
+    if (!stu_data) {
+        cerr << "Error: Could not open file for saving!\n";
         return;
     }
 
-    file.write((char *)&student_count, sizeof(student_count));
-    file.write((char *)students, sizeof(Student) * student_count);
-    file.close();
+    stu_data.write(reinterpret_cast<char*>(&student_count), sizeof(student_count));
+    stu_data.write(reinterpret_cast<char*>(students), sizeof(Student) * student_count);
 
-    cout << "Records saved successfully.\n";
+    if (stu_data.good())
+        cout << "Records saved successfully.\n";
+    else
+        cerr << "Error: Failed while writing to file!\n";
+
+    stu_data.close();
 }
 
-void load_records() {
+void load_records()
+{
     ifstream file("students.dat", ios::binary);
-    if (!file.is_open()) return;
-
-    int count;
-    file.read((char *)&count, sizeof(count));
-
-    if (count < 0 || count > MAX_STUDENTS) {
-        cout << "Corrupted data file. Ignoring.\n";
-        file.close();
+    
+    if (!file)
+    {
+        cerr << "Error: Could not open file for loading! ";
         return;
     }
 
-    file.read((char *)students, sizeof(Student) * count);
-
-    if (!file.good()) {
-        cout << "Error reading file. Some data may be missing.\n";
+    int count_from_file = 0;
+    
+    file.read(reinterpret_cast<char*>(&count_from_file), sizeof(count_from_file));
+    
+    if (count_from_file < 0 || count_from_file > MAX_STUDENTS)
+    {
+        cerr << "Error: Invalid student count. File may be corrupted\n";
         file.close();
         return;
     }
-
-    student_count = count;
-    file.close();
+     file.read(reinterpret_cast<char*>(students), sizeof(Student) * count_from_file);
+     
+      if (!file.good())
+    {
+        cerr << "Error: Failed reading student records.\n";
+        file.close();
+        return;
+    }
+    
+     student_count = count_from_file;
+     
+      file.close();
+      cout<<"Records loaded successfully.\n";
 }
+
