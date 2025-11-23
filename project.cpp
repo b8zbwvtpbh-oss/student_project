@@ -26,7 +26,7 @@ const int NUM_SUBJECTS=5;
 struct Student {
     int id;
     char name[50];
-    float marks[5];
+    float marks[NUM_SUBJECTS];
     float gpa;
     char grade;
 };
@@ -133,15 +133,15 @@ void main_menu() {
     } while (choice != 5);
 }
 
-void gpa( float* gpa, char* grade, float marks[], int num_subjects) {
+void gpa( float* gpa, char* grade, float marks[]) {
     
     float totalMarks = 0;
     
-    for (int i = 0; i < num_subjects; i++){
+    for (int i = 0; i < NUM_SUBJECTS; i++){
         totalMarks += marks[i];
     }
     
-    float percentage = totalMarks / (num_subjects * 100.0);
+    float percentage = totalMarks / (NUM_SUBJECTS * 100.0);
     *gpa = percentage * 5;
     
     if (*gpa >= 4.5)
@@ -201,7 +201,7 @@ void create_record() {
         } while (students[student_count].marks[i] < 0 || students[student_count].marks[i] > 100);
     }
 
-    gpa(&students[student_count].gpa, &students[student_count].grade, students[student_count].marks, NUM_SUBJECTS);
+    gpa(&students[student_count].gpa, &students[student_count].grade, students[student_count].marks);
 
     cout << "Record added successfully!" << endl;
     cout << "GPA: " << students[student_count].gpa << endl;
