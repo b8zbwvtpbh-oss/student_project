@@ -12,7 +12,7 @@ using namespace std;
 void create_user();
 bool login();
 void main_menu();
-void gpa(float *, char *, float [], int);
+void gpa(float *, char *, float []);
 void create_record();
 void display_record();
 void display_specific();
@@ -349,3 +349,4 @@ void load_records()
       file.close();
       cout<<"\nRecords loaded successfully.\n";
 }
+
