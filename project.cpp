@@ -219,7 +219,7 @@ void display_record()
     }
     else
     {
-        cout << "\n^All Student Records^\n";
+        cout << "\nAll Student Records\n";
         
         for (int i = 0; i < student_count; i++)
         {
@@ -241,10 +241,10 @@ void display_specific() {
 
     for (int i = 0; i < student_count; i++) {
         if (students[i].id == id) {
-            cout << "\nID: " << students[i].id
-                 << "\nName: " << students[i].name
-                 << "\nGPA: " << students[i].gpa
-                 << "\nGrade: " << students[i].grade << endl;
+            cout << "ID: " << students[i].id<<endl;
+            cout << "Name: " << students[i].name<<endl;
+            cout << "GPA: " <<fixed<<setprecision(2)<< students[i].gpa<<endl;
+            cout << "Grade: " << students[i].grade << endl;
             PAUSE;
             return;
         }
@@ -320,10 +320,7 @@ void load_records()
     ifstream file("students.dat", ios::binary);
     
     if (!file)
-    {
-        cerr << "Error: Could not open file for loading! ";
         return;
-    }
 
     int count_from_file = 0;
     
@@ -331,22 +328,18 @@ void load_records()
     
     if (count_from_file < 0 || count_from_file > MAX_STUDENTS)
     {
-        cerr << "Error: Invalid student count. File may be corrupted!\n";
         file.close();
         return;
     }
-     file.read(reinterpret_cast<char*>(students), sizeof(Student) * count_from_file);
+    file.read(reinterpret_cast<char*>(students), sizeof(Student) * count_from_file);
      
-      if (!file.good())
+    if (!file.good())
     {
-        cerr << "Error: Failed reading student records! \n";
         file.close();
         return;
     }
     
      student_count = count_from_file;
-     
-      file.close();
-      cout<<"\nRecords loaded successfully.\n";
-}
 
+    file.close();
+}
