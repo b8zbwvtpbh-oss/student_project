@@ -232,7 +232,7 @@ void display_record()
                  << setw(10) << students[i].id
                  << setw(20) << students[i].name
                  << setw(10) << students[i].gpa
-                 << setw(10) << students[i].grade
+                 << setw(10) << fixed<< setprecision(2) << students[i].grade
                  << "\n";
         }
 
@@ -350,3 +350,4 @@ void load_records()
 
     file.close();
 }
+
