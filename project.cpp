@@ -211,25 +211,32 @@ void create_record() {
     PAUSE;
 }
 
+
 void display_record()
 {
     if (student_count == 0)
     {
         cerr << "\nError: No student records available to display!\n";
-    }
-    else
-    {
-        cout << "\nAll Student Records\n";
-        
-        for (int i = 0; i < student_count; i++)
-        {
-            cout << "----------------------------------------"<<endl;
-            cout << "ID: " << students[i].id << endl;
-            cout << "Name: " << students[i].name << endl;
-            cout << "GPA: " << fixed << setprecision(2) << students[i].gpa << endl;
-            cout << "Grade: " << students[i].grade << endl;
+    }else{
+        cout << "\n-------------------------------------------------------------\n";
+        cout << left
+             << setw(10) << "ID"
+             << setw(20) << "Name"
+             << setw(10) << "GPA"
+             << setw(10) << "Grade"
+             << "\n";
+        cout << "-------------------------------------------------------------\n";
+
+        for (int i = 0; i < student_count; i++) {
+            cout << left
+                 << setw(10) << students[i].id
+                 << setw(20) << students[i].name
+                 << setw(10) << students[i].gpa
+                 << setw(10) << students[i].grade
+                 << "\n";
         }
-        cout << "----------------------------------------"<<endl;
+
+        cout << "-------------------------------------------------------------\n";
     }
     PAUSE;
 }
