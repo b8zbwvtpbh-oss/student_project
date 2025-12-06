@@ -170,7 +170,6 @@ void create_record() {
 
         cout << "Enter student ID: ";
         cin >> id;
-
         for (int i = 0; i < student_count; i++) {
             if (students[i].id == id) {
                 cerr << "Error: ID already exists. Enter a unique ID!\n";
@@ -286,7 +285,7 @@ void save_records()
     student_data.write(reinterpret_cast<const char*>(students), sizeof(Student) * student_count);
 
     if (!student_data){
-    cerr<<"Error: Write operation failed\n";
+    cerr<<"Error: Write operation failed!\n";
     student_data.close();
     return;
 }
@@ -303,6 +302,7 @@ void load_records()
     student_data.read(reinterpret_cast<char*>(&count_from_file), sizeof(count_from_file));
     if (count_from_file < 0 || count_from_file > MAX_STUDENTS)
     {
+        cerr<<"Error: File may be corrupted!\n";
         student_data.close();
         return;
     }
@@ -310,11 +310,12 @@ void load_records()
      
     if (!student_data)
     {
+        cerr<<"Error: File may be truncated!\n";
         student_data.close();
         return;
     }
     
-     student_count = count_from_file;
+    student_count = count_from_file;
 
     student_data.close();
 }
