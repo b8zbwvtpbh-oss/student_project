@@ -158,7 +158,7 @@ void gpa( float* gpa, char* grade, float marks[],int num_subjects) {
 
 void create_record() {
     if (student_count >= MAX_STUDENTS) {
-        cerr << "Error: Maximum number of students reached!\n";
+        cerr << "Notice: Maximum number of students reached!\n";
         PAUSE;
         return;
     }
@@ -172,7 +172,7 @@ void create_record() {
         cin >> id;
         for (int i = 0; i < student_count; i++) {
             if (students[i].id == id) {
-                cerr << "Error: ID already exists. Enter a unique ID!\n";
+                cerr << "Invalid: ID already exists. Enter a unique ID!\n";
                 recordID = true;
                 break;
             }
@@ -192,7 +192,7 @@ void create_record() {
             cin >> students[student_count].marks[i];
 
             if (students[student_count].marks[i] < 0 || students[student_count].marks[i] > 100) {
-                cerr << "Error: Invalid input, enter a number between 0 and 100." << endl;
+                cerr << "Invalid: Enter a number between 0 and 100." << endl;
             }
         } while (students[student_count].marks[i] < 0 || students[student_count].marks[i] > 100);
     }
@@ -207,7 +207,7 @@ void display_record()
 {
     if (student_count == 0)
     {
-        cerr << "\nError: No student records available to display!\n";
+        cerr << "\nNotice: No student records available to display!\n";
     }
     else
     {
@@ -241,7 +241,7 @@ void display_specific() {
         }
     }
     if(!found)
-    cerr << "Error: Record not found!\n";
+    cerr << "Notice: Record not found!\n";
     PAUSE;
 }
 
@@ -268,7 +268,7 @@ void delete_record()
 
     }
     if(!found){
-        cerr << "Error: Record not found!\n";
+        cerr << "Notice: Record not found!\n";
     }
     PAUSE;
 }
